@@ -1,0 +1,59 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cooktopia-shared</title>
+    <link rel="stylesheet" crossorigin="" href="{% static 'css/style.css' %}" />
+    <script type="module" crossorigin="" src="{% static 'js/add.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+        {% include 'includes/header.html' %}
+      </header>
+      <main class="flex-1">
+        <div class="container max-w-md py-8">
+          <h1 class="mb-6 text-2xl font-bold">Вход</h1>
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}            
+                <div class="alert alert-danger">
+                  {{ error }}
+                </div><br>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <div class="alert alert-danger">
+                {{ error }}
+              </div><br>
+            {% endfor %}
+          {% endif %}
+          <form method="post" class="space-y-4" {% if 'users:login' %}action="{% url 'users:login' %}"{% endif %}>
+            {% csrf_token %}
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.username.id_for_label }}">Электронная почта:</label>
+              {{ form.username }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.password.id_for_label }}">Пароль:</label>
+              {{ form.password }}
+            </div>
+            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" type="submit">Войти</button>
+          </form>
+          <div class="mt-4 flex flex-col items-center gap-2 text-sm text-muted-foreground">
+            <a class="hover:underline" href="/reset-password">Забыли пароль?</a>
+            <p>
+              Нет аккаунта? <a class="text-primary hover:underline" href="{% url 'users:signup' %}">Зарегистрироваться</a>
+            </p>
+          </div>
+        </div>
+      </main>
+      <footer class="mt-auto border-t bg-white">
+        {% include 'includes/footer.html' %}
+      </footer>
+    </div>
+    <div id="overlay" class="overlay"></div>
+  </body>
+</html>

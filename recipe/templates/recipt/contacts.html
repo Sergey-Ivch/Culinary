@@ -1,0 +1,142 @@
+{% load static %}
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cooktopia-shared</title>
+    <link rel="stylesheet" crossorigin="" href="{% static 'css/style.css' %}" />
+    <script type="module" crossorigin="" src="{% static 'js/add.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+        {% include 'includes/header.html' %}
+      </header>
+      <main class="flex-1">
+        <div class="container max-w-2xl py-10">
+          <div class="mb-8 text-center">
+            {% if recipe_id %}
+              <h1 class="mb-2 text-3xl font-bold">Отредактируйте свой рецепт</h1>
+            {% else %}
+              <h1 class="mb-2 text-3xl font-bold">Поделитесь своим рецептом</h1>
+            {% endif %}
+            <p class="text-gray-600">Поделитесь своим кулинарным шедевром с нашим сообществом</p>
+          </div>
+          <form class="space-y-6" method="post" enctype="multipart/form-data" {% if recipe_id %}action="/recipt/{{ recipe_id }}/{{ username }}/edit/"{% endif %}>
+            {% csrf_token %}
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.name.id_for_label }}">Название рецепта</label>
+              <p>{{ form.name.errors }}</p>
+              {{ form.name }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.cooking_time.id_for_label }}">Время приготовления</label>
+              <p>{{ form.cooking_time.errors }}</p>
+              {{ form.cooking_time }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.tag.id_for_label }}">Сложность</label>
+              <p>{{ form.tag.errors }}</p>
+              {{ form.tag }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Ингредиенты</label>
+              <div class="space-y-4">
+                <div id="ingredient-forms">
+                  {% if initial_ingredient_forms %}
+                    {% for ingredient_form in initial_ingredient_forms %}
+                      <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap margin-item">
+                        <div class="flex-[2_2_0%] min-w-[200px]">
+                          <select name="ingredient" class="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" id="id_ingredient" required>
+                            <option value="">---------</option>
+                            {% for ingredient in ingredients %}
+                              <option value="{{ ingredient.id }}" {% if ingredient_form.ingredient == ingredient.id %}selected{% endif %}>{{ ingredient.name }}  ({{ ingredient.measurement_unit }})</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <input type="number" name="quantity" value="{{ ingredient_form.quantity }}" id="id_quantity" class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm w-40 min-w-[120px] flex-1" required />
+                        <button class="remove-ingredient inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent h-10 w-10 text-destructive hover:text-destructive/90 shrink-0" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus h-4 w-4">
+                            <path d="M5 12h14"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    {% for ingredient_form in ingredient_forms %}
+                      <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap margin-item">
+                        <div class="flex-[2_2_0%] min-w-[200px]">
+                          <select name="ingredient" class="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" id="id_ingredient"></select>
+                        </div>
+                        <input type="number" name="quantity" value="1" class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm w-40 min-w-[120px] flex-1" required id="id_quantity" />
+                        <button class="remove-ingredient inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent h-10 w-10 text-destructive hover:text-destructive/90 shrink-0" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus h-4 w-4">
+                            <path d="M5 12h14"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+              <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full mt-2" type="button" id="add-ingredient-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus h-4 w-4 mr-2">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5v14"></path>
+                </svg>Добавить ингредиент
+              </button>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.text.id_for_label }}">Инструкция по приготовлению</label>
+              <p>{{ form.text.errors }}</p>
+              {{ form.text }}
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="{{ form.image.id_for_label }}">Фото блюда</label>
+              <p>{{ form.image.errors }}</p>
+              {{ form.image }}
+            </div>
+            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" type="submit">Поделиться рецептом</button>
+          </form>
+        </div>
+      </main>
+      <footer class="mt-auto border-t bg-white">
+        {% include 'includes/footer.html' %}
+      </footer>
+    </div>
+    <script>
+        const ingredientFormContainer = document.getElementById("ingredient-forms");
+        const addIngredientBtn = document.getElementById("add-ingredient-btn");
+        const ingredientFormTemplate = `
+                <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap margin-item">
+                    <div class="flex-[2_2_0%] min-w-[200px]">
+                        <select name="ingredient" class="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" id="id_ingredient required">
+                                            <option value="" selected>---------</option>
+                                            {% for ingredient in ingredients %}
+                                            <option value="{{ ingredient.id }}">{{ ingredient.name }} , {{ ingredient.measurement_unit }}</option>{% endfor %}
+                                        </select>
+                    </div>
+                    <input type="number" name="quantity" value="1" class="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm w-40 min-w-[120px] flex-1" required id="id_quantity" />
+                    <button
+                        class="remove-ingredient inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent h-10 w-10 text-destructive hover:text-destructive/90 shrink-0"
+                        type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-minus h-4 w-4">
+                        <path d="M5 12h14"></path>
+                        </svg>
+                    </button>
+                </div>`;
+        addIngredientBtn.addEventListener("click", () => {
+            ingredientFormContainer.insertAdjacentHTML("beforeend", ingredientFormTemplate);
+        });
+        ingredientFormContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('remove-ingredient')) {
+                event.target.parentElement.remove()
+            }
+        })
+    </script>
+    <div id="overlay" class="overlay"></div>
+  </body>
+</html>

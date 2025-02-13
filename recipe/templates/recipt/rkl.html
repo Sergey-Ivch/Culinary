@@ -1,0 +1,58 @@
+{% load static %}
+{% load thumbnail %}
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cooktopia-shared</title>
+    <link rel="stylesheet" crossorigin="" href="{% static 'css/style.css' %}" />
+    <script type="module" crossorigin="" src="{% static 'js/add.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+        {% include 'includes/header.html' %}
+      </header>
+      <main class="flex-1">
+        <div class="container py-8">
+          <h1 class="mb-6 text-2xl font-bold">Список покупок</h1>
+          <div class="space-y-6">
+            {% for post in posts %}
+              <div class="flex flex-col gap-4 rounded-lg border p-4 md:flex-row">
+                {% thumbnail post.image '660x440' crop='center' upscale=True as im %}
+                <img src="{{ im.url }}" alt="Классическая Пицца Маргарита" class="h-32 w-32 rounded-lg object-cover" loading="lazy" />
+                {% endthumbnail %}
+                <div class="flex-1">
+                  <div class="mb-2 flex items-start justify-between">
+                    <a class="text-lg font-semibold hover:underline" href="{% url 'recipt:recipt_detail' post.id post.author.username %}">{{ post.name }}</a>
+                    <a href="{% url 'recipt:post_delete' post.id post.author.username %}">
+                      <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash h-4 w-4">
+                          <path d="M3 6h18"></path>
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </a>
+                  </div>
+                  <ul class="list-inside list-disc space-y-1">
+                    {% for area in post.recipe_ingredients.all %}
+                      <li class="text-sm text-muted-foreground">
+                        {{ area.ingredient.name }} — {{ area.quantity }} {{ area.ingredient.measurement_unit }}<br />
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </main>
+      <footer class="mt-auto border-t bg-white">
+        {% include 'includes/footer.html' %}
+      </footer>
+    </div>
+    <div id="overlay" class="overlay"></div>
+  </body>
+</html>

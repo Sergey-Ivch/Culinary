@@ -1,0 +1,288 @@
+{% load static %}
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cooktopia-shared</title>
+    <link rel="stylesheet" crossorigin="" href="{% static 'css/style.css' %}" />
+    <script type="module" crossorigin="" src="{% static 'js/add.js' %}"></script>
+  </head>
+  <style>
+    .accordion-item {
+      border-bottom: 1px solid #ddd; /* Тонкая серая граница снизу */
+      margin-bottom: 0;
+    }
+    
+    .accordion-header {
+      background-color: transparent; /* Белый фон */
+      color: #000000; /* Темно серый текст */
+      cursor: pointer;
+      padding: 16px 0px 16px 0px;
+      width: 100%;
+      text-align: left; /* Выравнивание текста слева */
+      border: none; /* Убираем границу кнопки */
+      outline: none; /* Убираем outline при фокусе */
+      font-size: 16px; /* Размер шрифта */
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .accordion-content {
+      font-size: 14px;
+      color: #666; /* Светло серый текст */
+      overflow: hidden;
+      height: 0;
+      transition: height 0.3s ease; /* Анимация высоты */
+    }
+    
+    .accordion-icon {
+      transition: transform 0.3s ease; /* Анимация поворота стрелки */
+    }
+    
+    .accordion-header[aria-expanded='true'] .accordion-icon {
+      transform: rotate(180deg); /* Поворачиваем стрелку на 180 градусов */
+    }
+    
+    .accordion-header[aria-expanded='false'] .accordion-content {
+      padding: 0; /* Поворачиваем стрелку на 180 градусов */
+    }
+    
+    .accordion-header[aria-expanded='true'] .accordion-content {
+      padding: 0px 0px 0px 16px; /* Поворачиваем стрелку на 180 градусов */
+    }
+</style>
+  <body>
+    <div class="flex min-h-screen flex-col">
+        <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
+        {% include 'includes/header.html' %}
+      </header>
+      <main class="flex-1">
+        <div class="animate-fade-in">
+          <section class="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-gray-50">
+            <div class="absolute inset-0 z-0">
+              <div class="absolute inset-0 bg-black/40"></div>
+              <img src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9" alt="Вкусная Еда" class="h-full w-full object-cover" />
+            </div>
+            <div class="container relative z-10 py-20 text-center">
+              <span class="mb-4 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground">Поделитесь своим кулинарным путешествием</span>
+              <h1 class="mb-6 text-5xl font-bold tracking-tight text-white sm:text-6xl">Откройте для себя и поделитесь<br />удивительными рецептами</h1>
+              <p class="mx-auto mb-8 max-w-2xl text-lg text-gray-100">Присоединяйтесь к нашему сообществу любителей еды и делитесь своими любимыми рецептами со всем миром. От традиционной классики до современных инноваций.</p>
+              <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'recipt:recipt_all' %}">
+                  <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 gap-2 w-full sm:w-auto">
+                    Изучить рецепты<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right h-4 w-4">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </button>
+                </a>
+                <a href="{% url 'recipt:create_recipe' %}"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input hover:text-accent-foreground h-11 rounded-md px-8 bg-white/10 backdrop-blur-sm hover:bg-white/20 w-full sm:w-auto">Поделиться рецептом</button></a>
+              </div>
+            </div>
+          </section>
+          <section class="bg-white py-20">
+            <div class="container">
+              <div class="mb-12 text-center">
+                <h2 class="mb-4 text-3xl font-bold">Почему выбирают нас</h2><p class="text-gray-600">Откройте для себя преимущества нашей платформы</p>
+              </div>
+              <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="group rounded-lg bg-gray-50 p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div class="mb-4 inline-block rounded-full bg-accent p-3 text-accent-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat h-8 w-8">
+                      <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path>
+                      <path d="M6 17h12"></path>
+                    </svg>
+                  </div><h3 class="mb-2 text-xl font-semibold">Экспертные Рецепты</h3><p class="text-gray-600">Авторские рецепты от профессиональных шеф-поваров со всего мира</p>
+                </div>
+                <div class="group rounded-lg bg-gray-50 p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div class="mb-4 inline-block rounded-full bg-accent p-3 text-accent-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock h-8 w-8">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div><h3 class="mb-2 text-xl font-semibold">Экономия времени</h3><p class="text-gray-600">Быстрые и простые рецепты для активного образа жизни</p>
+                </div>
+                <div class="group rounded-lg bg-gray-50 p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div class="mb-4 inline-block rounded-full bg-accent p-3 text-accent-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award h-8 w-8">
+                      <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                      <circle cx="12" cy="8" r="6"></circle>
+                    </svg>
+                  </div><h3 class="mb-2 text-xl font-semibold">Гарантированное Качество</h3><p class="text-gray-600">Проверенные рецепты для достижения идеальных результатов</p>
+                </div>
+                <div class="group rounded-lg bg-gray-50 p-6 text-center transition-all hover:-translate-y-1 hover:shadow-lg">
+                  <div class="mb-4 inline-block rounded-full bg-accent p-3 text-accent-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-8 w-8">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div><h3 class="mb-2 text-xl font-semibold">Ориентированный на сообщество</h3><p class="text-gray-600">Делитесь и открывайте для себя рецепты от гурманов</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="container py-20">
+            <div class="mb-10 text-center">
+              <h2 class="mb-4 text-3xl font-bold">Избранные рецепты</h2>
+              <p class="text-gray-600">Откройте для себя нашу подборку вкусных рецептов</p>
+            </div>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <a class="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" href="{% url 'recipt:recipt_all' %}">
+                <div class="aspect-[4/3] overflow-hidden">
+                  <img src="{% static 'img/2020-07-23_16.10_1_1_1.png' %}" alt="Французские тосты" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                </div>
+                <div class="p-4">
+                  <div class="mb-2 flex items-center gap-2 text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-4 w-4">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg><span>Вероника Чернова</span>
+                  </div>
+                  <h3 class="mb-2 text-lg font-semibold text-gray-800">Французские тосты</h3>
+                  <div class="flex items-center justify-between text-sm text-gray-600">
+                    <span>20 минут</span><span>Легкая</span>
+                  </div>
+                </div>
+              </a><a class="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" href="{% url 'recipt:recipt_all' %}">
+                <div class="aspect-[4/3] overflow-hidden">
+                  <img src="{% static 'img/2020-07-23_16.10_1_2_EHcm5if.png' %}" alt="Английский завтрак" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                </div>
+                <div class="p-4">
+                  <div class="mb-2 flex items-center gap-2 text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-4 w-4">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg><span>Александр Бородин</span>
+                  </div><h3 class="mb-2 text-lg font-semibold text-gray-800">Английский завтрак</h3><div class="flex items-center justify-between text-sm text-gray-600">
+                    <span>35 минут</span><span>Средняя</span>
+                  </div>
+                </div>
+              </a><a class="group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" href="{% url 'recipt:recipt_all' %}">
+                <div class="aspect-[4/3] overflow-hidden">
+                  <img src="{% static 'img/2020-07-23_16.10_1_OWmh6O9.png' %}" alt="Паста с беконом" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                </div>
+                <div class="p-4">
+                  <div class="mb-2 flex items-center gap-2 text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user h-4 w-4">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg><span>Маша Ульянова</span>
+                  </div><h3 class="mb-2 text-lg font-semibold text-gray-800">Паста с беконом</h3><div class="flex items-center justify-between text-sm text-gray-600">
+                    <span>30 минут</span>
+                    <span>Средняя</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="mt-10 text-center">
+              <a href="{% url 'recipt:recipt_all' %}"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 rounded-md px-8">Посмотреть все рецепты</button></a>
+            </div>
+          </section>
+          <section class="bg-gray-50 py-20">
+            <div class="container">
+              <div class="grid items-center gap-12 lg:grid-cols-2">
+                <div>
+                  <img src="https://images.unsplash.com/photo-1721322800607-8c38375eef04" alt="Сообщество" class="rounded-lg shadow-xl" />
+                </div>
+                <div>
+                  <h2 class="mb-6 text-3xl font-bold">Присоединяйтесь к нашему сообществу</h2><p class="mb-8 text-lg text-gray-600">Станьте частью растущего сообщества поваров-энтузиастов. Делитесь рецептами, получайте отзывы и вдохновляйтесь кулинарными творениями других участников.</p><a href="/register"><button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8">Присоединиться сейчас</button></a>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="bg-white py-20">
+            <div class="container max-w-3xl">
+              <div class="mb-12 text-center">
+                <h2 class="mb-4 text-3xl font-bold">Частые вопросы</h2>
+                <p class="text-gray-600">Ответы на самые популярные вопросы о нашей платформе</p>
+              </div>
+              <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                  Как добавить свой рецепт?
+                  <span class="accordion-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </button>
+                <div class="accordion-content">Чтобы добавить свой рецепт, нажмите кнопку 'Поделиться рецептом' в верхней части страницы. Заполните форму с описанием, ингредиентами и шагами приготовления.</div>
+              </div>
+              <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                  Могу ли я редактировать свои рецепты?
+                  <span class="accordion-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </button>
+                <div class="accordion-content">Да, вы можете редактировать свои рецепты в любое время. Просто перейдите на страницу рецепта и нажмите кнопку редактирования.</div>
+              </div>
+              <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                  Как добавить рецепт в список покупок?
+                  <span class="accordion-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </button>
+                <div class="accordion-content">На странице рецепта нажмите кнопку 'Добавить в список покупок'. Все ингредиенты будут автоматически добавлены в ваш список.</div>
+              </div>
+              <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                  Как найти определенный рецепт?
+                  <span class="accordion-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </button>
+                <div class="accordion-content">Используйте поиск на странице 'Все рецепты', где вы можете фильтровать рецепты по категориям, времени приготовления и сложности.</div>
+              </div>
+              <div class="accordion-item">
+                <button class="accordion-header" aria-expanded="false">
+                  Можно ли сохранить рецепт в избранное?
+                  <span class="accordion-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200">
+                      <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                  </span>
+                </button>
+                <div class="accordion-content">Да, на странице любого рецепта есть кнопка 'В избранное'. Нажмите на неё, чтобы сохранить рецепт и быстро находить его позже.</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <footer class="mt-auto border-t bg-white">
+        {% include 'includes/footer.html' %}
+      </footer>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <script>
+    const accordionItems = document.querySelectorAll('.accordion-item');
+
+  accordionItems.forEach(item => {
+  const header = item.querySelector('.accordion-header');
+  const content = item.querySelector('.accordion-content');
+
+  header.addEventListener('click', () => {
+    // Toggle aria-expanded attribute
+    header.setAttribute('aria-expanded', header.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+    
+    //Toggle height of content
+    if (header.getAttribute('aria-expanded') === 'true') {
+      content.style.height = 68 + 'px'; // Calculate height dynamically
+    } else {
+      content.style.height = '0';
+    }
+  });
+});
+</script>
+  </body>
+</html>
