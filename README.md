@@ -75,6 +75,11 @@ python manage.py runserver
 http://127.0.0.1:8000/
 ```
 
+### Просмотр проекта на тестовом сервере:
+
+```
+testhome.pythonanywhere.com
+```
 
 ### Автор
 - [Ивченков Сергей](https://github.com/Sergey-Ivch)
