@@ -26,16 +26,22 @@
 ![validators](https://img.shields.io/badge/validators-gray) ![context_processors](https://img.shields.io/badge/context_processors-gray)
 
 
-### Как запустить проект:
+### Как развернуть проект локально:
+
+Клонируйте репозиторий:
+
+```
+git clone https://github.com/Sergey-Ivch/Culinary.git
+```
 
 Cоздать и активировать виртуальное окружение:
 
 ```
-python -m venv env
+python -m venv venv
 ```
 
 ```
-source env/bin/activate
+source venv/Scripts/activate
 ```
 
 ```
@@ -51,7 +57,11 @@ pip install -r requirements.txt
 Перейти в папку с файлом manage.py и выполнить миграции:
 
 ```
-python manage.py makemigrations users
+cd recipe
+```
+
+```
+python manage.py makemigrations
 python manage.py migrate
 ```
 
@@ -67,4 +77,4 @@ http://127.0.0.1:8000/
 
 
 ### Автор
-- [Ивченков Сергей](https://github.com/SleekHarpy)
+- [Ивченков Сергей](https://github.com/Sergey-Ivch)
